@@ -411,7 +411,7 @@
             document.getElementById("passwordError").textContent = "";
 
             try {
-                const res = await fetch("/documents/", {
+                const res = await fetch("https://muhammad-ayyan-aieng-rag-model.hf.space/documents", {
                     method: "GET",
                     headers: {
                         "x-admin-password": password
@@ -450,7 +450,7 @@
         // ================================
         async function loadDocuments() {
             try {
-                const res = await fetch("/documents/", {
+                const res = await fetch("https://muhammad-ayyan-aieng-rag-model.hf.space/documents/upload", {
                     headers: getAuthHeaders()
                 });
 
@@ -515,7 +515,7 @@
             if (!confirm(`Delete "${filename}"? This cannot be undone.`)) return;
 
             try {
-                const res = await fetch("http://localhost:8000/documents/upload", {
+               const res = await fetch(`https://muhammad-ayyan-aieng-rag-model.hf.space/documents/${docId}`, {
                     method: "DELETE",
                     headers: getAuthHeaders()
                 });
