@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Document Assistant</title>
+    <title>Admin Panel - RAG Assistant</title>
     <style>
         * {
             margin: 0;
@@ -18,9 +18,6 @@
             min-height: 100vh;
         }
 
-        /* ================================
-           NAVBAR
-        ================================ */
         .navbar {
             background: #161b22;
             border-bottom: 1px solid #30363d;
@@ -51,18 +48,12 @@
             color: #e1e4e8;
         }
 
-        /* ================================
-           MAIN LAYOUT
-        ================================ */
         .container {
             max-width: 1000px;
             margin: 0 auto;
             padding: 2rem 1rem;
         }
 
-        /* ================================
-           CARDS
-        ================================ */
         .card {
             background: #161b22;
             border: 1px solid #30363d;
@@ -80,9 +71,6 @@
             margin-bottom: 1rem;
         }
 
-        /* ================================
-           PASSWORD MODAL
-        ================================ */
         .modal {
             position: fixed;
             top: 0;
@@ -122,9 +110,6 @@
             margin-bottom: 1rem;
         }
 
-        /* ================================
-           UPLOAD AREA
-        ================================ */
         .upload-area {
             border: 2px dashed #30363d;
             border-radius: 8px;
@@ -169,9 +154,6 @@
             display: flex;
         }
 
-        /* ================================
-           DOCUMENTS TABLE
-        ================================ */
         .documents-table {
             width: 100%;
             border-collapse: collapse;
@@ -206,9 +188,6 @@
             background: #f85149;
         }
 
-        /* ================================
-           BUTTONS
-        ================================ */
         .btn {
             padding: 0.6rem 1.25rem;
             border-radius: 6px;
@@ -243,9 +222,6 @@
             background: #388bfd;
         }
 
-        /* ================================
-           STATUS
-        ================================ */
         .status {
             padding: 0.75rem 1rem;
             border-radius: 6px;
@@ -333,7 +309,6 @@
 </head>
 <body>
 
-    <!-- PASSWORD MODAL -->
     <div id="passwordModal" class="modal">
         <div class="modal-card">
             <div class="modal-title">🔐 Admin Access</div>
@@ -343,7 +318,6 @@
         </div>
     </div>
 
-    <!-- MAIN CONTENT (hidden until login) -->
     <div id="mainContent" style="display: none;">
         <nav class="navbar">
             <span class="navbar-brand">🔐 Admin Panel</span>
@@ -351,7 +325,6 @@
         </nav>
 
         <div class="container">
-            <!-- STATS CARD -->
             <div class="card">
                 <div class="card-title">System Statistics</div>
                 <div class="stats">
@@ -367,7 +340,6 @@
                 <button class="refresh-btn" onclick="loadDocuments()" style="margin-top: 1rem;">⟳ Refresh</button>
             </div>
 
-            <!-- UPLOAD CARD (Admin: No limits) -->
             <div class="card">
                 <div class="card-title">Upload Document (Unlimited)</div>
                 <div class="upload-area" id="uploadArea">
@@ -386,7 +358,6 @@
                 <div class="status" id="uploadStatus"></div>
             </div>
 
-            <!-- DOCUMENTS LIST CARD -->
             <div class="card">
                 <div class="card-title">Uploaded Documents</div>
                 <div id="documentsList">
@@ -397,11 +368,9 @@
     </div>
 
     <script>
+        const API_BASE = "https://muhammad-ayyan-aieng-rag-model.hf.space";
         let adminPassword = "";
 
-        // ================================
-        // Password verification
-        // ================================
         async function verifyPassword() {
             const pwdInput = document.getElementById("adminPassword");
             const password = pwdInput.value.trim();
@@ -411,7 +380,7 @@
             document.getElementById("passwordError").textContent = "";
 
             try {
-                const res = await fetch("https://muhammad-ayyan-aieng-rag-model.hf.space/documents", {
+                const res = await fetch(`${API_BASE}/documents/`, {
                     method: "GET",
                     headers: {
                         "x-admin-password": password
@@ -419,15 +388,10 @@
                 });
 
                 if (res.status === 200) {
-                    // Password is correct
                     adminPassword = password;
                     document.getElementById("passwordModal").style.display = "none";
                     document.getElementById("mainContent").style.display = "block";
-                    
-                    // Store password for subsequent requests
                     window.adminPassword = password;
-                    
-                    // Load documents
                     loadDocuments();
                 } else if (res.status === 401) {
                     document.getElementById("passwordError").textContent = "Invalid password";
@@ -445,17 +409,13 @@
             };
         }
 
-        // ================================
-        // Load documents
-        // ================================
         async function loadDocuments() {
             try {
-                const res = await fetch("https://muhammad-ayyan-aieng-rag-model.hf.space/documents/upload", {
+                const res = await fetch(`${API_BASE}/documents/`, {
                     headers: getAuthHeaders()
                 });
 
                 if (res.status === 401) {
-                    // Session expired, show password modal again
                     document.getElementById("passwordModal").style.display = "flex";
                     document.getElementById("mainContent").style.display = "none";
                     return;
@@ -465,14 +425,11 @@
 
                 const data = await res.json();
                 
-                // Update stats
                 document.getElementById("totalDocs").textContent = data.total;
                 
-                // Calculate total chunks
                 const totalChunks = data.documents.reduce((sum, doc) => sum + doc.chunks_count, 0);
                 document.getElementById("totalChunks").textContent = totalChunks;
 
-                // Render documents table
                 const container = document.getElementById("documentsList");
                 
                 if (data.documents.length === 0) {
@@ -508,14 +465,11 @@
             }
         }
 
-        // ================================
-        // Delete document
-        // ================================
         async function deleteDocument(docId, filename) {
             if (!confirm(`Delete "${filename}"? This cannot be undone.`)) return;
 
             try {
-               const res = await fetch(`https://muhammad-ayyan-aieng-rag-model.hf.space/documents/${docId}`, {
+                const res = await fetch(`${API_BASE}/documents/${docId}`, {
                     method: "DELETE",
                     headers: getAuthHeaders()
                 });
@@ -528,7 +482,7 @@
 
                 if (res.ok) {
                     showStatus("uploadStatus", "success", `✓ Deleted: ${filename}`);
-                    loadDocuments(); // Refresh list
+                    loadDocuments();
                 } else {
                     const data = await res.json();
                     showStatus("uploadStatus", "error", `✗ ${data.detail}`);
@@ -538,9 +492,6 @@
             }
         }
 
-        // ================================
-        // Upload logic (Admin - no limits)
-        // ================================
         const uploadArea = document.getElementById("uploadArea");
         const fileInput = document.getElementById("fileInput");
 
@@ -587,7 +538,7 @@
             formData.append("files", file);
 
             try {
-                const res = await fetch("/documents/upload", {
+                const res = await fetch(`${API_BASE}/documents/upload`, {
                     method: "POST",
                     headers: getAuthHeaders(),
                     body: formData
@@ -605,7 +556,7 @@
                     showStatus("uploadStatus", "success", `✓ "${data.filename}" uploaded — ${data.chunks_created} chunks created`);
                     document.getElementById("fileSelected").classList.remove("visible");
                     fileInput.value = "";
-                    loadDocuments(); // Refresh document list
+                    loadDocuments();
                 } else {
                     showStatus("uploadStatus", "error", `✗ ${data.detail}`);
                 }
@@ -618,9 +569,6 @@
             }
         }
 
-        // ================================
-        // Helpers
-        // ================================
         function showStatus(id, type, message) {
             const el = document.getElementById(id);
             if (el) {
