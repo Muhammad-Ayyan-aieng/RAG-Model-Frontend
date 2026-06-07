@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up — RAG Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-base: #05050f;
+    --bg-surface: #0c0c1e;
+    --bg-card: #10102a;
+    --bg-elevated: #161632;
+    --bg-input: #1a1a38;
+    --border: rgba(139, 92, 246, 0.15);
+    --border-hover: rgba(139, 92, 246, 0.35);
+    --border-focus: rgba(139, 92, 246, 0.6);
+    --purple-primary: #7c3aed;
+    --purple-light: #a855f7;
+    --purple-glow: rgba(124, 58, 237, 0.2);
+    --blue-primary: #2563eb;
+    --blue-light: #3b82f6;
+    --gradient: linear-gradient(135deg, #7c3aed, #2563eb);
+    --gradient-text: linear-gradient(135deg, #a855f7, #60a5fa);
+    --gradient-subtle: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(37,99,235,0.08));
+    --text-primary: #f0f0ff;
+    --text-secondary: #9090b8;
+    --text-muted: #5a5a80;
+    --success: #10b981;
+    --success-bg: rgba(16, 185, 129, 0.1);
+    --error: #ef4444;
+    --error-bg: rgba(239, 68, 68, 0.1);
+    --info-bg: rgba(124, 58, 237, 0.1);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-base);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -20%;
+    right: -10%;
+    width: 55%;
+    height: 55%;
+    background: radial-gradient(ellipse, rgba(37,99,235,0.09) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -20%;
+    left: -10%;
+    width: 45%;
+    height: 45%;
+    background: radial-gradient(ellipse, rgba(124,58,237,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  nav {
+    position: relative;
+    z-index: 10;
+    background: rgba(5, 5, 15, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .nav-logo {
+    width: 32px;
+    height: 32px;
+    background: var(--gradient);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .nav-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .back-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover { color: var(--purple-light); }
+
+  main {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+  }
+
+  .signup-wrapper {
+    width: 100%;
+    max-width: 460px;
+  }
+
+  /* TWO COLUMN LAYOUT ON WIDER */
+  .signup-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  /* DECO */
+  .signup-deco {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .signup-icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    background: var(--gradient);
+    border-radius: var(--radius-lg);
+    font-size: 1.75rem;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 0 40px rgba(37, 99, 235, 0.35);
+    animation: iconFloat 3s ease-in-out infinite;
+  }
+
+  @keyframes iconFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .signup-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.4rem;
+  }
+
+  .signup-subtitle {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gradient);
+    opacity: 0.5;
+  }
+
+  /* FORM */
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .form-group { margin-bottom: 1.2rem; }
+
+  .form-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  .form-label-badge {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 1px 7px;
+    font-weight: 400;
+  }
+
+  .input-wrap { position: relative; }
+
+  .input-icon {
+    position: absolute;
+    left: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  .input-field {
+    width: 100%;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+
+  .input-field:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+    background: var(--bg-elevated);
+  }
+
+  .input-field::placeholder { color: var(--text-muted); }
+
+  .input-field.valid { border-color: rgba(16,185,129,0.4); }
+  .input-field.invalid { border-color: rgba(239,68,68,0.4); }
+
+  .password-toggle {
+    position: absolute;
+    right: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    padding: 0;
+    transition: color 0.2s;
+  }
+
+  .password-toggle:hover { color: var(--purple-light); }
+
+  /* PASSWORD STRENGTH */
+  .password-strength {
+    margin-top: 0.5rem;
+    display: none;
+  }
+
+  .password-strength.visible { display: block; }
+
+  .strength-bars {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 0.3rem;
+  }
+
+  .strength-bar {
+    flex: 1;
+    height: 3px;
+    border-radius: 100px;
+    background: var(--bg-elevated);
+    transition: background 0.3s;
+  }
+
+  .strength-bar.active-weak { background: var(--error); }
+  .strength-bar.active-fair { background: #f59e0b; }
+  .strength-bar.active-good { background: #3b82f6; }
+  .strength-bar.active-strong { background: var(--success); }
+
+  .strength-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  /* TERMS */
+  .terms-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+    cursor: pointer;
+  }
+
+  .terms-checkbox {
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--border-hover);
+    border-radius: 4px;
+    background: var(--bg-input);
+    flex-shrink: 0;
+    cursor: pointer;
+    accent-color: var(--purple-primary);
+    margin-top: 1px;
+  }
+
+  .terms-text {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .terms-text a {
+    color: var(--purple-light);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .terms-text a:hover { text-decoration: underline; }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    width: 100%;
+  }
+
+  .btn-primary {
+    background: var(--gradient);
+    color: #fff;
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+    letter-spacing: 0.01em;
+  }
+
+  .btn-primary:hover {
+    opacity: 0.92;
+    box-shadow: 0 0 35px rgba(124, 58, 237, 0.5);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* STATUS */
+  .status {
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    margin-top: 1rem;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    line-height: 1.5;
+  }
+
+  .status.visible { display: flex; }
+  .status.loading { background: var(--info-bg); border: 1px solid var(--border-hover); color: var(--purple-light); }
+  .status.success { background: var(--success-bg); border: 1px solid rgba(16,185,129,0.25); color: #6ee7b7; }
+  .status.error { background: var(--error-bg); border: 1px solid rgba(239,68,68,0.25); color: #fca5a5; }
+
+  .spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid transparent;
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* PERKS */
+  .perks-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+  }
+
+  .perk-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.75rem;
+  }
+
+  .perk-icon { font-size: 0.9rem; }
+
+  /* FOOTER LINK */
+  .form-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+
+  .form-footer a {
+    color: var(--purple-light);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .form-footer a:hover { text-decoration: underline; }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 1.5rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+    <div class="nav-logo">🧠</div>
+    <span class="nav-title">RAG Assistant</span>
+  </a>
+  <a href="index.html" class="back-link">← Back to Home</a>
+</nav>
+
+<main>
+  <div class="signup-wrapper">
+
+    <div class="signup-deco">
+      <div class="signup-icon-wrap">📝</div>
+      <div class="signup-title">Create your account</div>
+      <div class="signup-subtitle">Get a private workspace for your documents</div>
+    </div>
+
+    <div class="card">
+
+      <!-- COMING SOON NOTICE -->
+      <div style="background: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(37,99,235,0.06)); border: 1px solid var(--border-hover); border-radius: var(--radius-md); padding: 0.85rem 1rem; margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 10px;">
+        <span style="font-size: 1rem; flex-shrink: 0;">🚧</span>
+        <div style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">
+          <strong style="color: var(--purple-light);">Registration coming soon.</strong>
+          Backend auth is under development. For now, use the
+          <a href="admin.html" style="color: var(--purple-light); font-weight:500;">Admin panel</a>
+          or continue as a
+          <a href="index.html" style="color: var(--blue-light); font-weight:500;">public user</a>.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="name">
+          Display name
+          <span class="form-label-badge">optional</span>
+        </label>
+        <div class="input-wrap">
+          <span class="input-icon">👤</span>
+          <input
+            type="text"
+            id="name"
+            class="input-field"
+            placeholder="Your name"
+            autocomplete="name"
+          >
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">Email address</label>
+        <div class="input-wrap">
+          <span class="input-icon">✉️</span>
+          <input
+            type="email"
+            id="email"
+            class="input-field"
+            placeholder="your@email.com"
+            autocomplete="email"
+            oninput="validateEmail(this)"
+          >
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <div class="input-wrap">
+          <span class="input-icon">🔑</span>
+          <input
+            type="password"
+            id="password"
+            class="input-field"
+            placeholder="At least 6 characters"
+            autocomplete="new-password"
+            oninput="checkStrength(this.value)"
+            onkeydown="if(event.key==='Enter') signup()"
+          >
+          <button class="password-toggle" type="button" onclick="togglePassword('password', this)">
+            Show
+          </button>
+        </div>
+
+        <div class="password-strength" id="strengthWrap">
+          <div class="strength-bars">
+            <div class="strength-bar" id="bar1"></div>
+            <div class="strength-bar" id="bar2"></div>
+            <div class="strength-bar" id="bar3"></div>
+            <div class="strength-bar" id="bar4"></div>
+          </div>
+          <div class="strength-label" id="strengthLabel">Enter a password</div>
+        </div>
+      </div>
+
+      <label class="terms-row">
+        <input type="checkbox" id="termsCheck" class="terms-checkbox">
+        <div class="terms-text">
+          I agree to the <a href="#">Terms of Service</a> and
+          <a href="#">Privacy Policy</a>. My documents will only be accessible to me and admins.
+        </div>
+      </label>
+
+      <button class="btn btn-primary" id="signupBtn" onclick="signup()">
+        Create Free Account
+      </button>
+
+      <div class="status" id="signupStatus"></div>
+
+    </div>
+
+    <div class="perks-grid">
+      <div class="perk-item"><span class="perk-icon">🔒</span> Private documents</div>
+      <div class="perk-item"><span class="perk-icon">📦</span> 10 MB per file</div>
+      <div class="perk-item"><span class="perk-icon">📄</span> Up to 50 documents</div>
+      <div class="perk-item"><span class="perk-icon">💬</span> 100 queries/hour</div>
+    </div>
+
+    <div class="form-footer">
+      Already have an account?
+      <a href="login.html">Sign in →</a>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  RAG Assistant &nbsp;·&nbsp; Your private workspace awaits
+</footer>
+
+<script>
+  const API_BASE = "https://muhammad-ayyan-aieng-rag-model.hf.space"
+
+  if (localStorage.getItem("authToken")) {
+    window.location.href = "dashboard.html"
+  }
+
+  function togglePassword(id, btn) {
+    const input = document.getElementById(id)
+    if (input.type === "password") {
+      input.type = "text"
+      btn.textContent = "Hide"
+    } else {
+      input.type = "password"
+      btn.textContent = "Show"
+    }
+  }
+
+  function validateEmail(input) {
+    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)
+    input.classList.toggle("valid", valid && input.value.length > 0)
+    input.classList.toggle("invalid", !valid && input.value.length > 0)
+  }
+
+  function checkStrength(val) {
+    const wrap = document.getElementById("strengthWrap")
+    const label = document.getElementById("strengthLabel")
+    const bars = [1,2,3,4].map(i => document.getElementById("bar" + i))
+
+    if (!val) {
+      wrap.classList.remove("visible")
+      return
+    }
+
+    wrap.classList.add("visible")
+
+    let score = 0
+    if (val.length >= 6) score++
+    if (val.length >= 10) score++
+    if (/[A-Z]/.test(val) && /[0-9]/.test(val)) score++
+    if (/[^A-Za-z0-9]/.test(val)) score++
+
+    const levels = ["", "weak", "fair", "good", "strong"]
+    const labels = ["", "Weak — too short", "Fair — add numbers", "Good — add symbols", "Strong password ✓"]
+    const colors = { weak: "#ef4444", fair: "#f59e0b", good: "#3b82f6", strong: "#10b981" }
+
+    bars.forEach((bar, i) => {
+      bar.className = "strength-bar"
+      if (i < score) bar.classList.add(`active-${levels[score]}`)
+    })
+
+    label.textContent = labels[score]
+    label.style.color = colors[levels[score]] || "var(--text-muted)"
+  }
+
+  async function signup() {
+    const name     = document.getElementById("name").value.trim()
+    const email    = document.getElementById("email").value.trim()
+    const password = document.getElementById("password").value
+    const terms    = document.getElementById("termsCheck").checked
+
+    if (!email) {
+      showStatus("signupStatus", "error", "✗ Email is required.")
+      return
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showStatus("signupStatus", "error", "✗ Please enter a valid email address.")
+      return
+    }
+
+    if (password.length < 6) {
+      showStatus("signupStatus", "error", "✗ Password must be at least 6 characters.")
+      return
+    }
+
+    if (!terms) {
+      showStatus("signupStatus", "error", "✗ Please accept the Terms of Service to continue.")
+      return
+    }
+
+    const btn = document.getElementById("signupBtn")
+    btn.disabled = true
+    btn.innerHTML = '<span class="spinner"></span> Creating account...'
+    showStatus("signupStatus", "loading", "Setting up your workspace...")
+
+    try {
+      const res = await fetch(`${API_BASE}/auth/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password })
+      })
+
+      const data = await res.json()
+
+      if (res.ok) {
+        localStorage.setItem("authToken", data.token)
+        localStorage.setItem("user", JSON.stringify(data.user))
+        showStatus("signupStatus", "success", "✓ Account created — welcome! Redirecting...")
+        setTimeout(() => { window.location.href = "dashboard.html" }, 900)
+      } else {
+        showStatus("signupStatus", "error", `✗ ${data.detail || "Registration failed"}`)
+      }
+    } catch(err) {
+      showStatus("signupStatus", "error", "✗ Auth service not available yet. Coming soon.")
+    } finally {
+      btn.disabled = false
+      btn.innerHTML = "Create Free Account"
+    }
+  }
+
+  function showStatus(id, type, msg) {
+    const el = document.getElementById(id)
+    el.className = `status ${type} visible`
+    el.innerHTML = type === "loading"
+      ? `<span class="spinner"></span><span>${msg}</span>`
+      : msg
+  }
+</script>
+</body>
+</html>
