@@ -902,7 +902,7 @@
 
     try {
       const token = localStorage.getItem("authToken")
-      const res = await fetch(`${API_BASE}/documents/`, {
+      const res = await fetch(`${API_BASE}/documents/upload`, {
         headers: token ? { "Authorization": `Bearer ${token}`, "x-admin-password": "" } : {}
       })
 
