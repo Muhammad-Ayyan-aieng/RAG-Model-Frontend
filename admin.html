@@ -61,7 +61,6 @@
     z-index: 0;
   }
 
-  /* ── NAV ── */
   nav {
     position: sticky;
     top: 0;
@@ -79,17 +78,9 @@
   .nav-brand { display:flex; align-items:center; gap:10px; text-decoration:none; }
   .nav-logo { width:32px; height:32px; background:var(--gradient); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; }
   .nav-title { font-family:'Space Grotesk',sans-serif; font-size:1.1rem; font-weight:600; background:var(--gradient-text); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-
-  .nav-badge {
-    display:inline-flex; align-items:center; gap:5px;
-    background: var(--warning-bg); border:1px solid rgba(245,158,11,0.3);
-    border-radius:100px; padding:3px 10px;
-    font-size:0.72rem; color:var(--warning); font-weight:600;
-  }
-
+  .nav-badge { display:inline-flex; align-items:center; gap:5px; background:var(--warning-bg); border:1px solid rgba(245,158,11,0.3); border-radius:100px; padding:3px 10px; font-size:0.72rem; color:var(--warning); font-weight:600; }
   .nav-right { display:flex; align-items:center; gap:8px; }
 
-  /* ── BUTTONS ── */
   .btn {
     display:inline-flex; align-items:center; justify-content:center; gap:6px;
     padding:0.45rem 1rem; border-radius:var(--radius-sm);
@@ -106,11 +97,8 @@
   .btn-primary:disabled { opacity:0.4; cursor:not-allowed; transform:none; box-shadow:none; }
   .btn-danger { background:var(--error-bg); color:var(--error); border:1px solid rgba(239,68,68,0.2); }
   .btn-danger:hover { background:rgba(239,68,68,0.2); }
-  .btn-success { background:var(--success-bg); color:var(--success); border:1px solid rgba(16,185,129,0.2); }
-  .btn-success:hover { background:rgba(16,185,129,0.15); }
   .btn-sm { padding:0.32rem 0.7rem; font-size:0.78rem; }
 
-  /* ── PASSWORD MODAL ── */
   .modal-overlay {
     position:fixed; inset:0; z-index:999;
     background:rgba(0,0,0,0.7);
@@ -182,14 +170,12 @@
   .modal-status.error { background:var(--error-bg); border:1px solid rgba(239,68,68,0.25); color:#fca5a5; }
   .modal-status.loading { background:var(--info-bg); border:1px solid var(--border-hover); color:var(--purple-light); }
 
-  /* ── PAGE ── */
   .page { position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:2rem 1.5rem 4rem; }
 
   .page-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:2rem; flex-wrap:wrap; gap:1rem; }
   .page-title { font-family:'Space Grotesk',sans-serif; font-size:1.6rem; font-weight:700; background:var(--gradient-text); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:0.25rem; }
   .page-subtitle { color:var(--text-muted); font-size:0.875rem; }
 
-  /* ── STATS ── */
   .stats-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:1rem; margin-bottom:1.75rem; }
 
   .stat-card {
@@ -205,7 +191,6 @@
   .stat-value { font-family:'Space Grotesk',sans-serif; font-size:1.5rem; font-weight:700; color:var(--text-primary); line-height:1; margin-bottom:0.25rem; }
   .stat-label { font-size:0.72rem; color:var(--text-muted); font-weight:500; text-transform:uppercase; letter-spacing:0.06em; }
 
-  /* ── TABS ── */
   .tabs-bar {
     display:flex; gap:4px;
     background:var(--bg-card); border:1px solid var(--border);
@@ -214,7 +199,7 @@
   }
 
   .tab-btn {
-    flex:1; min-width:120px; padding:0.6rem 1rem;
+    flex:1; min-width:100px; padding:0.6rem 1rem;
     border-radius:var(--radius-sm); border:none; background:transparent;
     color:var(--text-muted); font-size:0.85rem; font-weight:500;
     cursor:pointer; transition:all 0.2s; font-family:'Inter',sans-serif;
@@ -228,35 +213,25 @@
 
   @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
 
-  /* ── CARD ── */
   .card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.5rem; margin-bottom:1.25rem; }
-  .card:hover { border-color:var(--border-hover); }
   .card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem; }
   .card-title { display:flex; align-items:center; gap:8px; font-family:'Space Grotesk',sans-serif; font-size:0.82rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.07em; }
   .card-title-icon { width:22px; height:22px; background:var(--gradient-subtle); border:1px solid var(--border); border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:11px; }
 
-  /* ── SEARCH ── */
   .search-row { display:flex; gap:8px; margin-bottom:1rem; }
-  .search-input { flex:1; background:var(--bg-input); border:1px solid var(--border); border-radius:var(--radius-sm); padding:0.6rem 1rem; color:var(--text-primary); font-size:0.875rem; font-family:'Inter',sans-serif; outline:none; transition:border-color 0.2s; }
+  .search-input { flex:1; background:var(--bg-input); border:1px solid var(--border); border-radius:var(--radius-sm); padding:0.6rem 1rem; color:var(--text-primary); font-size:0.875rem; outline:none; }
   .search-input:focus { border-color:var(--border-focus); }
-  .search-input::placeholder { color:var(--text-muted); }
 
-  /* ── TABLE ── */
   .table-wrap { overflow-x:auto; border-radius:var(--radius-md); border:1px solid var(--border); }
   table { width:100%; border-collapse:collapse; font-size:0.85rem; }
   thead tr { background:var(--bg-elevated); border-bottom:1px solid var(--border); }
   thead th { padding:0.75rem 1rem; text-align:left; font-size:0.72rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em; white-space:nowrap; }
   tbody tr { border-bottom:1px solid var(--border); transition:background 0.15s; }
-  tbody tr:last-child { border-bottom:none; }
   tbody tr:hover { background:var(--bg-elevated); }
   tbody td { padding:0.8rem 1rem; color:var(--text-secondary); vertical-align:middle; }
 
   .td-main { display:flex; align-items:center; gap:8px; color:var(--text-primary); font-weight:500; }
   .td-icon { width:28px; height:28px; background:var(--gradient-subtle); border:1px solid var(--border); border-radius:5px; display:flex; align-items:center; justify-content:center; font-size:0.8rem; flex-shrink:0; }
-
-  .role-badge { display:inline-flex; align-items:center; gap:4px; padding:2px 9px; border-radius:100px; font-size:0.72rem; font-weight:600; }
-  .role-badge.admin { background:var(--warning-bg); border:1px solid rgba(245,158,11,0.25); color:var(--warning); }
-  .role-badge.user { background:var(--info-bg); border:1px solid var(--border); color:var(--purple-light); }
 
   .privacy-badge { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:100px; font-size:0.72rem; font-weight:600; }
   .privacy-badge.private { background:var(--error-bg); border:1px solid rgba(239,68,68,0.2); color:#fca5a5; }
@@ -265,14 +240,12 @@
   .table-empty { text-align:center; padding:3rem 1rem; color:var(--text-muted); font-size:0.85rem; }
   .table-empty-icon { font-size:2rem; margin-bottom:0.5rem; opacity:0.4; }
 
-  /* ── PAGINATION ── */
   .pagination { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:1rem; }
   .page-btn { width:32px; height:32px; border-radius:var(--radius-sm); border:1px solid var(--border); background:var(--bg-elevated); color:var(--text-muted); font-size:0.82rem; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; }
   .page-btn:hover { border-color:var(--border-hover); color:var(--text-primary); }
   .page-btn.active { background:var(--gradient); color:#fff; border-color:transparent; }
   .page-btn:disabled { opacity:0.3; cursor:not-allowed; }
 
-  /* ── CHAT ── */
   .chat-messages { min-height:200px; max-height:360px; overflow-y:auto; margin-bottom:1rem; display:flex; flex-direction:column; gap:0.75rem; padding-right:4px; }
   .chat-messages::-webkit-scrollbar { width:4px; }
   .chat-messages::-webkit-scrollbar-thumb { background:var(--border-hover); border-radius:100px; }
@@ -285,7 +258,6 @@
   .chat-sources { margin-top:0.5rem; display:flex; flex-wrap:wrap; gap:5px; }
   .source-pill { display:inline-flex; align-items:center; gap:4px; background:var(--info-bg); border:1px solid var(--border); border-radius:100px; padding:2px 9px; font-size:0.72rem; color:var(--purple-light); }
 
-  /* ── UPLOAD ── */
   .upload-drop { border:1.5px dashed var(--border-hover); border-radius:var(--radius-md); padding:2rem 1rem; text-align:center; cursor:pointer; transition:all 0.25s; }
   .upload-drop:hover, .upload-drop.dragover { border-color:var(--purple-primary); background:var(--purple-glow); }
   .upload-drop-icon { font-size:1.75rem; margin-bottom:0.5rem; opacity:0.6; }
@@ -300,8 +272,7 @@
   .f-name { font-size:0.82rem; color:var(--text-primary); font-weight:500; }
   .f-size { font-size:0.72rem; color:var(--text-muted); margin-top:1px; }
 
-  /* ── STATUS ── */
-  .status { padding:0.65rem 0.9rem; border-radius:var(--radius-sm); font-size:0.82rem; margin-top:0.75rem; display:none; align-items:center; gap:7px; line-height:1.5; }
+  .status { padding:0.65rem 0.9rem; border-radius:var(--radius-sm); font-size:0.82rem; margin-top:0.75rem; display:none; align-items:center; gap:7px; }
   .status.visible { display:flex; }
   .status.loading { background:var(--info-bg); border:1px solid var(--border-hover); color:var(--purple-light); }
   .status.success { background:var(--success-bg); border:1px solid rgba(16,185,129,0.25); color:#6ee7b7; }
@@ -322,270 +293,84 @@
 </head>
 <body>
 
-<!-- ── PASSWORD MODAL ── -->
 <div class="modal-overlay" id="authModal">
   <div class="modal">
     <div class="modal-icon">⚙️</div>
     <div class="modal-title">Admin Access</div>
     <div class="modal-sub">Enter your admin password to continue</div>
-
     <div class="input-wrap">
       <span class="input-icon">🔑</span>
-      <input type="password" id="modalPassword" class="input-field"
-        placeholder="Admin password"
-        onkeydown="if(event.key==='Enter') verifyAdmin()">
+      <input type="password" id="modalPassword" class="input-field" placeholder="Admin password" onkeydown="if(event.key==='Enter') verifyAdmin()">
       <button class="pwd-toggle" onclick="togglePwd('modalPassword', this)">Show</button>
     </div>
-
-    <button class="modal-btn" id="modalBtn" onclick="verifyAdmin()">
-      Enter Admin Panel
-    </button>
-
+    <button class="modal-btn" id="modalBtn" onclick="verifyAdmin()">Enter Admin Panel</button>
     <div class="modal-status" id="modalStatus"></div>
-
-    <div style="text-align:center; margin-top:1rem;">
-      <a href="index.html" style="font-size:0.82rem; color:var(--text-muted); text-decoration:none;">
-        ← Back to public site
-      </a>
-    </div>
+    <div style="text-align:center; margin-top:1rem;"><a href="index.html" style="font-size:0.82rem; color:var(--text-muted); text-decoration:none;">← Back to public site</a></div>
   </div>
 </div>
 
-<!-- ── NAV ── -->
 <nav>
-  <a href="index.html" class="nav-brand">
-    <div class="nav-logo">🧠</div>
-    <span class="nav-title">RAG Assistant</span>
-  </a>
+  <a href="index.html" class="nav-brand"><div class="nav-logo">🧠</div><span class="nav-title">RAG Assistant</span></a>
   <div style="display:flex; align-items:center; gap:8px;">
     <span class="nav-badge">⚙️ Admin</span>
-    <div class="nav-right">
-      <a href="index.html" class="btn btn-ghost btn-sm">← Public</a>
-      <button class="btn btn-danger btn-sm" onclick="adminLogout()">Logout</button>
-    </div>
+    <a href="index.html" class="btn btn-ghost btn-sm">← Public</a>
+    <button class="btn btn-danger btn-sm" onclick="adminLogout()">Logout</button>
   </div>
 </nav>
 
-<!-- ── PAGE ── -->
 <div class="page" id="adminPage" style="display:none;">
-
   <div class="page-header">
-    <div>
-      <div class="page-title">Admin Dashboard</div>
-      <div class="page-subtitle">Full system control — documents, users, queries</div>
-    </div>
+    <div><div class="page-title">Admin Dashboard</div><div class="page-subtitle">Full system control — documents, users, queries</div></div>
     <button class="btn btn-outline btn-sm" onclick="loadAllStats()">⟳ Refresh Stats</button>
   </div>
 
-  <!-- STATS -->
   <div class="stats-grid">
-    <div class="stat-card">
-      <span class="stat-icon">👥</span>
-      <div class="stat-value" id="sTotalUsers">—</div>
-      <div class="stat-label">Total Users</div>
-    </div>
-    <div class="stat-card">
-      <span class="stat-icon">📄</span>
-      <div class="stat-value" id="sTotalDocs">—</div>
-      <div class="stat-label">Documents</div>
-    </div>
-    <div class="stat-card">
-      <span class="stat-icon">🔢</span>
-      <div class="stat-value" id="sTotalChunks">—</div>
-      <div class="stat-label">Chunks</div>
-    </div>
-    <div class="stat-card">
-      <span class="stat-icon">📤</span>
-      <div class="stat-value" id="sTotalUploads">—</div>
-      <div class="stat-label">Total Uploads</div>
-    </div>
-    <div class="stat-card">
-      <span class="stat-icon">💬</span>
-      <div class="stat-value" id="sTotalQueries">—</div>
-      <div class="stat-label">Queries</div>
-    </div>
+    <div class="stat-card"><span class="stat-icon">👥</span><div class="stat-value" id="sTotalUsers">—</div><div class="stat-label">Total Users</div></div>
+    <div class="stat-card"><span class="stat-icon">📄</span><div class="stat-value" id="sTotalDocs">—</div><div class="stat-label">Documents</div></div>
+    <div class="stat-card"><span class="stat-icon">🔢</span><div class="stat-value" id="sTotalChunks">—</div><div class="stat-label">Chunks</div></div>
+    <div class="stat-card"><span class="stat-icon">📤</span><div class="stat-value" id="sTotalUploads">—</div><div class="stat-label">Total Uploads</div></div>
+    <div class="stat-card"><span class="stat-icon">💬</span><div class="stat-value" id="sTotalQueries">—</div><div class="stat-label">Queries</div></div>
   </div>
 
-  <!-- TABS -->
   <div class="tabs-bar">
     <button class="tab-btn active" onclick="switchTab('documents')" id="tab-documents">📄 Documents</button>
     <button class="tab-btn" onclick="switchTab('query')" id="tab-query">💬 Query</button>
     <button class="tab-btn" onclick="switchTab('upload')" id="tab-upload">📤 Upload</button>
-    <button class="tab-btn" onclick="switchTab('users')" id="tab-users">👥 Users <span style="font-size:0.7rem; opacity:0.6; margin-left:2px;">(soon)</span></button>
   </div>
 
-  <!-- ── TAB: DOCUMENTS ── -->
   <div class="tab-panel active" id="panel-documents">
     <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <div class="card-title-icon">📄</div>
-          All Documents
-        </div>
-        <button class="btn btn-ghost btn-sm" onclick="loadDocuments()">⟳ Refresh</button>
-      </div>
-
-      <div class="search-row">
-        <input type="text" class="search-input" id="docSearch"
-          placeholder="Search by filename..."
-          oninput="filterDocs(this.value)">
-        <button class="btn btn-outline btn-sm" onclick="loadDocuments()">Reload</button>
-      </div>
-
+      <div class="card-header"><div class="card-title"><div class="card-title-icon">📄</div>All Documents</div><button class="btn btn-ghost btn-sm" onclick="loadDocuments()">⟳ Refresh</button></div>
+      <div class="search-row"><input type="text" class="search-input" id="docSearch" placeholder="Search by filename..." oninput="filterDocs(this.value)"><button class="btn btn-outline btn-sm" onclick="loadDocuments()">Reload</button></div>
       <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Filename</th>
-              <th>Document ID</th>
-              <th>Chunks</th>
-              <th>Uploaded</th>
-              <th>Privacy</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="docsTableBody">
-            <tr><td colspan="6"><div class="table-empty"><div class="table-empty-icon">⟳</div><div>Loading documents...</div></div></td></tr>
-          </tbody>
-        </table>
+        <table><thead><tr><th>Filename</th><th>Document ID</th><th>Chunks</th><th>Uploaded</th><th>Privacy</th><th>Actions</th></tr></thead><tbody id="docsTableBody"><tr><td colspan="6"><div class="table-empty"><div class="table-empty-icon">⟳</div><div>Loading documents...</div></div></td></tr></tbody></table>
       </div>
-
       <div class="pagination" id="docsPagination"></div>
     </div>
   </div>
 
-  <!-- ── TAB: QUERY ── -->
   <div class="tab-panel" id="panel-query">
     <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <div class="card-title-icon">💬</div>
-          Admin Query — Search All Documents
-        </div>
-        <button class="btn btn-ghost btn-sm" onclick="clearAdminChat()">Clear</button>
-      </div>
-
-      <div class="chat-messages" id="adminChatMessages">
-        <div class="chat-empty" id="adminChatEmpty">
-          <div class="chat-empty-icon">🔍</div>
-          <div>Search across all documents in the knowledge base</div>
-          <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">Admin has full access — all documents are searchable</div>
-        </div>
-      </div>
-
-      <div class="input-group">
-        <input type="text" class="input-field" id="adminQuestion"
-          placeholder="Ask anything across all documents..."
-          onkeydown="if(event.key==='Enter') adminAsk()">
-        <button class="btn btn-primary btn-sm" id="adminAskBtn" onclick="adminAsk()">Ask</button>
-      </div>
+      <div class="card-header"><div class="card-title"><div class="card-title-icon">💬</div>Admin Query — Search All Documents</div><button class="btn btn-ghost btn-sm" onclick="clearAdminChat()">Clear</button></div>
+      <div class="chat-messages" id="adminChatMessages"><div class="chat-empty" id="adminChatEmpty"><div class="chat-empty-icon">🔍</div><div>Search across all documents in the knowledge base</div><div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">Admin has full access — all documents are searchable</div></div></div>
+      <div class="input-group"><input type="text" class="input-field" id="adminQuestion" placeholder="Ask anything across all documents..." onkeydown="if(event.key==='Enter') adminAsk()"><button class="btn btn-primary btn-sm" id="adminAskBtn" onclick="adminAsk()">Ask</button></div>
     </div>
   </div>
 
-  <!-- ── TAB: UPLOAD ── -->
   <div class="tab-panel" id="panel-upload">
     <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <div class="card-title-icon">📤</div>
-          Upload Document — Admin (No Limits)
-        </div>
-      </div>
-
-      <div style="background:var(--success-bg); border:1px solid rgba(16,185,129,0.2); border-radius:var(--radius-sm); padding:0.75rem 1rem; margin-bottom:1.25rem; font-size:0.82rem; color:#6ee7b7; display:flex; align-items:center; gap:8px;">
-        <span>✓</span>
-        Admin uploads have no file size limit and no file count restrictions.
-      </div>
-
-      <div class="upload-drop" id="adminUploadArea">
-        <div class="upload-drop-icon">📁</div>
-        <div class="upload-drop-text">Click to select or drag &amp; drop</div>
-        <div class="upload-drop-sub">No size limit · <span>PDF, TXT</span> supported</div>
-      </div>
-
+      <div class="card-header"><div class="card-title"><div class="card-title-icon">📤</div>Upload Document — Admin (No Limits)</div></div>
+      <div style="background:var(--success-bg); border:1px solid rgba(16,185,129,0.2); border-radius:var(--radius-sm); padding:0.75rem 1rem; margin-bottom:1.25rem; font-size:0.82rem; color:#6ee7b7; display:flex; align-items:center; gap:8px;"><span>✓</span>Admin uploads have no file size limit and no file count restrictions.</div>
+      <div class="upload-drop" id="adminUploadArea"><div class="upload-drop-icon">📁</div><div class="upload-drop-text">Click to select or drag &amp; drop</div><div class="upload-drop-sub">No size limit · <span>PDF, TXT</span> supported</div></div>
       <input type="file" id="uploadFileInput" accept=".pdf,.txt">
-
-      <div class="file-preview" id="adminFilePreview">
-        <div class="file-preview-info">
-          <div class="f-icon" id="adminFileIcon">📄</div>
-          <div>
-            <div class="f-name" id="adminFileName"></div>
-            <div class="f-size" id="adminFileSize"></div>
-          </div>
-        </div>
-        <button class="btn btn-ghost btn-sm" onclick="clearAdminFile()" style="padding:0.25rem 0.5rem;">✕</button>
-      </div>
-
-      <div style="display:flex; justify-content:flex-end; margin-top:0.75rem;">
-        <button class="btn btn-primary" id="adminUploadBtn" onclick="adminUpload()" disabled>
-          Upload Document
-        </button>
-      </div>
-
+      <div class="file-preview" id="adminFilePreview"><div class="file-preview-info"><div class="f-icon" id="adminFileIcon">📄</div><div><div class="f-name" id="adminFileName"></div><div class="f-size" id="adminFileSize"></div></div></div><button class="btn btn-ghost btn-sm" onclick="clearAdminFile()" style="padding:0.25rem 0.5rem;">✕</button></div>
+      <div style="display:flex; justify-content:flex-end; margin-top:0.75rem;"><button class="btn btn-primary" id="adminUploadBtn" onclick="adminUpload()" disabled>Upload Document</button></div>
       <div class="status" id="adminUploadStatus"></div>
     </div>
   </div>
-
-  <!-- ── TAB: USERS ── -->
-  <div class="tab-panel" id="panel-users">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <div class="card-title-icon">👥</div>
-          User Management
-        </div>
-      </div>
-
-      <div style="background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(37,99,235,0.06)); border:1px solid var(--border-hover); border-radius:var(--radius-md); padding:1rem 1.25rem; margin-bottom:1.25rem; display:flex; align-items:flex-start; gap:10px;">
-        <span style="font-size:1.1rem; flex-shrink:0;">🚧</span>
-        <div style="font-size:0.85rem; color:var(--text-secondary); line-height:1.6;">
-          <strong style="color:var(--purple-light);">User management coming soon.</strong>
-          Once the auth system is live, you'll be able to view all users,
-          promote users to admin, disable accounts, and see per-user usage statistics.
-        </div>
-      </div>
-
-      <div class="table-wrap" style="opacity:0.4; pointer-events:none;">
-        <table>
-          <thead>
-            <tr>
-              <th>User</th>
-              <th>Role</th>
-              <th>Uploads</th>
-              <th>Queries</th>
-              <th>Joined</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><div class="td-main"><div class="td-icon">👤</div>admin@example.com</div></td>
-              <td><span class="role-badge admin">⚙️ Admin</span></td>
-              <td>—</td><td>—</td><td>—</td>
-              <td><button class="btn btn-ghost btn-sm" disabled>—</button></td>
-            </tr>
-            <tr>
-              <td><div class="td-main"><div class="td-icon">👤</div>user@example.com</div></td>
-              <td><span class="role-badge user">👤 User</span></td>
-              <td>—</td><td>—</td><td>—</td>
-              <td>
-                <div style="display:flex; gap:6px;">
-                  <button class="btn btn-success btn-sm" disabled>Make Admin</button>
-                  <button class="btn btn-danger btn-sm" disabled>Delete</button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
 </div>
 
-<footer>
-  RAG Assistant Admin &nbsp;·&nbsp; Full system access
-</footer>
+<footer>RAG Assistant Admin &nbsp;·&nbsp; Full system access</footer>
 
 <script>
   const API_BASE = "https://muhammad-ayyan-aieng-rag-model.hf.space"
@@ -594,362 +379,101 @@
   let currentPage = 1
   const PAGE_SIZE = 10
 
-  // ── AUTH ────────────────────────────────────────────────────
-  function togglePwd(id, btn) {
-    const el = document.getElementById(id)
-    el.type = el.type === "password" ? "text" : "password"
-    btn.textContent = el.type === "password" ? "Show" : "Hide"
-  }
+  function togglePwd(id, btn) { const el = document.getElementById(id); el.type = el.type === "password" ? "text" : "password"; btn.textContent = el.type === "password" ? "Show" : "Hide" }
 
   async function verifyAdmin() {
     const pwd = document.getElementById("modalPassword").value.trim()
     if (!pwd) { showModalStatus("error", "✗ Enter the admin password"); return }
-
     const btn = document.getElementById("modalBtn")
-    btn.disabled = true
-    btn.innerHTML = '<span class="spinner"></span> Verifying...'
-    showModalStatus("loading", "Checking credentials...")
-
+    btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Verifying...'; showModalStatus("loading", "Checking credentials...")
     try {
-      const res = await fetch(`${API_BASE}/documents/`, {
-        headers: { "x-admin-password": pwd }
-      })
-
-      if (res.ok) {
-        adminPassword = pwd
-        localStorage.setItem("adminPassword", pwd)
-        document.getElementById("authModal").style.display = "none"
-        document.getElementById("adminPage").style.display = "block"
-        loadAllStats()
-        loadDocuments()
-      } else if (res.status === 401) {
-        showModalStatus("error", "✗ Incorrect password")
-        document.getElementById("modalPassword").value = ""
-      } else {
-        adminPassword = pwd
-        localStorage.setItem("adminPassword", pwd)
-        document.getElementById("authModal").style.display = "none"
-        document.getElementById("adminPage").style.display = "block"
-        loadAllStats()
-        loadDocuments()
-      }
-    } catch(e) {
-      showModalStatus("error", "✗ Could not reach server")
-    } finally {
-      btn.disabled = false
-      btn.innerHTML = "Enter Admin Panel"
-    }
+      const res = await fetch(`${API_BASE}/documents/`, { headers: { "x-admin-password": pwd } })
+      if (res.ok) { adminPassword = pwd; localStorage.setItem("adminPassword", pwd); document.getElementById("authModal").style.display = "none"; document.getElementById("adminPage").style.display = "block"; loadAllStats(); loadDocuments() }
+      else if (res.status === 401) { showModalStatus("error", "✗ Incorrect password"); document.getElementById("modalPassword").value = "" }
+      else { adminPassword = pwd; localStorage.setItem("adminPassword", pwd); document.getElementById("authModal").style.display = "none"; document.getElementById("adminPage").style.display = "block"; loadAllStats(); loadDocuments() }
+    } catch(e) { showModalStatus("error", "✗ Could not reach server") }
+    finally { btn.disabled = false; btn.innerHTML = "Enter Admin Panel" }
   }
 
-  function adminLogout() {
-    adminPassword = ""
-    localStorage.removeItem("adminPassword")
-    document.getElementById("authModal").style.display = "flex"
-    document.getElementById("adminPage").style.display = "none"
-    document.getElementById("modalPassword").value = ""
-    document.getElementById("modalStatus").className = "modal-status"
-  }
+  function adminLogout() { adminPassword = ""; localStorage.removeItem("adminPassword"); document.getElementById("authModal").style.display = "flex"; document.getElementById("adminPage").style.display = "none"; document.getElementById("modalPassword").value = ""; document.getElementById("modalStatus").className = "modal-status" }
+  function showModalStatus(type, msg) { const el = document.getElementById("modalStatus"); el.className = `modal-status ${type} visible`; el.innerHTML = type === "loading" ? `<span class="spinner"></span><span>${msg}</span>` : msg }
 
-  function showModalStatus(type, msg) {
-    const el = document.getElementById("modalStatus")
-    el.className = `modal-status ${type} visible`
-    el.innerHTML = type === "loading"
-      ? `<span class="spinner"></span><span>${msg}</span>`
-      : msg
-  }
-
-  // Check saved password
   const savedPwd = localStorage.getItem("adminPassword")
-  if (savedPwd) {
-    adminPassword = savedPwd
-    document.getElementById("authModal").style.display = "none"
-    document.getElementById("adminPage").style.display = "block"
-  }
+  if (savedPwd) { adminPassword = savedPwd; document.getElementById("authModal").style.display = "none"; document.getElementById("adminPage").style.display = "block" }
 
-  // ── TABS ────────────────────────────────────────────────────
-  function switchTab(name) {
-    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"))
-    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"))
-    document.getElementById("panel-" + name).classList.add("active")
-    document.getElementById("tab-" + name).classList.add("active")
-    if (name === "documents") loadDocuments()
-  }
+  function switchTab(name) { document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active")); document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active")); document.getElementById("panel-" + name).classList.add("active"); document.getElementById("tab-" + name).classList.add("active"); if (name === "documents") loadDocuments() }
 
-  // ── STATS ───────────────────────────────────────────────────
   async function loadAllStats() {
-    try {
-      const res = await fetch(`${API_BASE}/health`, {
-        headers: { "x-admin-password": adminPassword }
-      })
-      const data = await res.json()
-      if (res.ok) {
-        document.getElementById("sTotalDocs").textContent   = data.total_documents ?? "—"
-        document.getElementById("sTotalChunks").textContent = data.total_chunks ?? "—"
-      }
-    } catch(e) {}
-
-    // Admin stats endpoint (coming soon fallback)
-    try {
-      const res = await fetch(`${API_BASE}/admin/stats`, {
-        headers: { "x-admin-password": adminPassword }
-      })
-      if (res.ok) {
-        const data = await res.json()
-        document.getElementById("sTotalUsers").textContent   = data.total_users ?? "—"
-        document.getElementById("sTotalUploads").textContent = data.total_uploads ?? "—"
-        document.getElementById("sTotalQueries").textContent = data.total_queries ?? "—"
-      }
-    } catch(e) {}
+    try { const res = await fetch(`${API_BASE}/health`, { headers: { "x-admin-password": adminPassword } }); const data = await res.json(); if (res.ok) { document.getElementById("sTotalDocs").textContent = data.total_documents ?? "—"; document.getElementById("sTotalChunks").textContent = data.total_chunks ?? "—" } } catch(e) {}
+    try { const res = await fetch(`${API_BASE}/admin/stats`, { headers: { "x-admin-password": adminPassword } }); if (res.ok) { const data = await res.json(); document.getElementById("sTotalUsers").textContent = data.data?.total_users ?? data.total_users ?? "—"; document.getElementById("sTotalUploads").textContent = data.data?.total_uploads ?? data.total_uploads ?? "—"; document.getElementById("sTotalQueries").textContent = data.data?.total_queries ?? data.total_queries ?? "—" } } catch(e) {}
   }
 
-  // ── DOCUMENTS ───────────────────────────────────────────────
   async function loadDocuments() {
     const tbody = document.getElementById("docsTableBody")
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--text-muted);font-size:0.85rem;"><span class="spinner" style="margin-right:8px;"></span>Loading...</td></tr>`
-
-    try {
-      const res = await fetch(`${API_BASE}/documents/upload`, {
-        headers: { "x-admin-password": adminPassword }
-      })
-      const data = await res.json()
-      allDocs = data.documents || []
-      currentPage = 1
-      renderDocsTable(allDocs)
-    } catch(e) {
-      tbody.innerHTML = `<tr><td colspan="6"><div class="table-empty"><div class="table-empty-icon">⚠️</div><div>Could not load documents</div></div></td></tr>`
-    }
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;"><span class="spinner" style="margin-right:8px;"></span>Loading...</div></div></td></tr>`
+    try { const res = await fetch(`${API_BASE}/documents/`, { headers: { "x-admin-password": adminPassword } }); const data = await res.json(); allDocs = data.documents || []; currentPage = 1; renderDocsTable(allDocs) } catch(e) { console.error(e); tbody.innerHTML = `<tr><td colspan="6"><div class="table-empty"><div class="table-empty-icon">⚠️</div><div>Could not load documents</div></div></td></tr>` }
   }
 
   function renderDocsTable(docs) {
-    const tbody = document.getElementById("docsTableBody")
-    const pagination = document.getElementById("docsPagination")
-
-    if (docs.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="6"><div class="table-empty"><div class="table-empty-icon">📂</div><div>No documents in the knowledge base yet</div></div></td></tr>`
-      pagination.innerHTML = ""
-      return
-    }
-
-    const totalPages = Math.ceil(docs.length / PAGE_SIZE)
-    const start = (currentPage - 1) * PAGE_SIZE
-    const pageDocs = docs.slice(start, start + PAGE_SIZE)
-
-    tbody.innerHTML = pageDocs.map(doc => `
-      <tr>
-        <td>
-          <div class="td-main">
-            <div class="td-icon">${doc.filename?.endsWith('.pdf') ? '📕' : '📝'}</div>
-            <span title="${escHtml(doc.filename)}">${escHtml(doc.filename?.length > 28 ? doc.filename.slice(0,28)+'…' : doc.filename || '—')}</span>
-          </div>
-        </td>
-        <td style="font-size:0.75rem;color:var(--text-muted);font-family:monospace;">${(doc.document_id||'—').slice(0,12)}…</td>
-        <td>${doc.chunks_count ?? '—'}</td>
-        <td style="font-size:0.8rem;">${doc.uploaded_at || '—'}</td>
-        <td><span class="privacy-badge public">🌐 Public</span></td>
-        <td>
-          <button class="btn btn-danger btn-sm" onclick="deleteDoc('${doc.document_id}','${escHtml(doc.filename)}')">
-            Delete
-          </button>
-        </td>
-      </tr>
-    `).join("")
-
-    // Pagination
+    const tbody = document.getElementById("docsTableBody"), pagination = document.getElementById("docsPagination")
+    if (docs.length === 0) { tbody.innerHTML = `<tr><td colspan="6"><div class="table-empty"><div class="table-empty-icon">📂</div><div>No documents in the knowledge base yet</div></div></td></tr>`; pagination.innerHTML = ""; return }
+    const totalPages = Math.ceil(docs.length / PAGE_SIZE), start = (currentPage - 1) * PAGE_SIZE, pageDocs = docs.slice(start, start + PAGE_SIZE)
+    tbody.innerHTML = pageDocs.map(doc => `<tr><td><div class="td-main"><div class="td-icon">${doc.filename?.endsWith('.pdf') ? '📕' : '📝'}</div><span title="${escHtml(doc.filename)}">${escHtml(doc.filename?.length > 28 ? doc.filename.slice(0,28)+'…' : doc.filename || '—')}</span></div></td><td style="font-size:0.75rem;font-family:monospace;">${(doc.document_id||'—').slice(0,12)}…</td><td>${doc.chunks_count ?? '—'}</td><td style="font-size:0.8rem;">${doc.uploaded_at || '—'}</td><td><span class="privacy-badge public">🌐 Public</span></td><td><button class="btn btn-danger btn-sm" onclick="deleteDoc('${doc.document_id}','${escHtml(doc.filename)}')">Delete</button></td></tr>`).join("")
     if (totalPages <= 1) { pagination.innerHTML = ""; return }
     let html = `<button class="page-btn" onclick="changePage(${currentPage-1})" ${currentPage===1?"disabled":""}>‹</button>`
-    for (let i = 1; i <= totalPages; i++) {
-      html += `<button class="page-btn ${i===currentPage?'active':''}" onclick="changePage(${i})">${i}</button>`
-    }
-    html += `<button class="page-btn" onclick="changePage(${currentPage+1})" ${currentPage===totalPages?"disabled":""}>›</button>`
-    pagination.innerHTML = html
+    for (let i = 1; i <= totalPages; i++) html += `<button class="page-btn ${i===currentPage?'active':''}" onclick="changePage(${i})">${i}</button>`
+    html += `<button class="page-btn" onclick="changePage(${currentPage+1})" ${currentPage===totalPages?"disabled":""}>›</button>`; pagination.innerHTML = html
   }
 
-  function changePage(page) {
-    const total = Math.ceil(allDocs.length / PAGE_SIZE)
-    if (page < 1 || page > total) return
-    currentPage = page
-    renderDocsTable(allDocs)
-  }
-
-  function filterDocs(query) {
-    const filtered = allDocs.filter(d =>
-      (d.filename || "").toLowerCase().includes(query.toLowerCase())
-    )
-    currentPage = 1
-    renderDocsTable(filtered)
-  }
+  function changePage(page) { const total = Math.ceil(allDocs.length / PAGE_SIZE); if (page < 1 || page > total) return; currentPage = page; renderDocsTable(allDocs) }
+  function filterDocs(query) { const filtered = allDocs.filter(d => (d.filename || "").toLowerCase().includes(query.toLowerCase())); currentPage = 1; renderDocsTable(filtered) }
 
   async function deleteDoc(id, filename) {
-    if (!confirm(`Delete "${filename}"?\n\nThis removes all ${id} chunks from the knowledge base.`)) return
-
-    try {
-      const res = await fetch(`${API_BASE}/documents/${id}`, {
-        method: "DELETE",
-        headers: { "x-admin-password": adminPassword }
-      })
-
-      if (res.ok) {
-        allDocs = allDocs.filter(d => d.document_id !== id)
-        renderDocsTable(allDocs)
-        loadAllStats()
-      } else {
-        alert("Delete failed — check admin password")
-      }
-    } catch(e) {
-      alert("Could not connect to server")
-    }
+    if (!confirm(`Delete "${filename}"?\n\nThis removes all chunks from the knowledge base.`)) return
+    try { const res = await fetch(`${API_BASE}/documents/${id}`, { method: "DELETE", headers: { "x-admin-password": adminPassword } }); if (res.ok) { allDocs = allDocs.filter(d => d.document_id !== id); renderDocsTable(allDocs); loadAllStats() } else { alert("Delete failed — check admin password") } } catch(e) { alert("Could not connect to server") }
   }
 
-  // ── ADMIN QUERY ─────────────────────────────────────────────
-  function clearAdminChat() {
-    const c = document.getElementById("adminChatMessages")
-    c.innerHTML = `<div class="chat-empty" id="adminChatEmpty"><div class="chat-empty-icon">🔍</div><div>Search across all documents in the knowledge base</div><div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">Admin has full access — all documents are searchable</div></div>`
-  }
+  function clearAdminChat() { const c = document.getElementById("adminChatMessages"); c.innerHTML = `<div class="chat-empty" id="adminChatEmpty"><div class="chat-empty-icon">🔍</div><div>Search across all documents in the knowledge base</div><div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">Admin has full access — all documents are searchable</div></div>` }
 
   async function adminAsk() {
-    const input = document.getElementById("adminQuestion")
-    const question = input.value.trim()
+    const question = document.getElementById("adminQuestion").value.trim()
     if (!question) return
-
-    const btn = document.getElementById("adminAskBtn")
-    btn.disabled = true
-    btn.innerHTML = '<span class="spinner"></span>'
-
+    const btn = document.getElementById("adminAskBtn"); btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>'
     const container = document.getElementById("adminChatMessages")
     document.getElementById("adminChatEmpty")?.remove()
-
     container.innerHTML += `<div class="chat-bubble user">${escHtml(question)}</div>`
-    const thinkId = "athink_" + Date.now()
-    container.innerHTML += `<div class="chat-bubble thinking" id="${thinkId}">⟳ Searching all documents...</div>`
-    container.scrollTop = container.scrollHeight
-    input.value = ""
-
+    const thinkId = "athink_" + Date.now(); container.innerHTML += `<div class="chat-bubble thinking" id="${thinkId}">⟳ Searching all documents...</div>`; container.scrollTop = container.scrollHeight; document.getElementById("adminQuestion").value = ""
     try {
-      const res = await fetch(`${API_BASE}/query/ask`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-admin-password": adminPassword
-        },
-        body: JSON.stringify({ question, top_k: 5 })
-      })
-
-      const data = await res.json()
-      document.getElementById(thinkId)?.remove()
-
-      if (res.ok) {
-        const sources = (data.sources || []).map(s =>
-          `<span class="source-pill">📄 ${escHtml(s.filename)} <span style="opacity:0.6">·${s.chunk_index}</span></span>`
-        ).join("")
-
-        const modelTag = data.model_used
-          ? `<div style="margin-top:8px;font-size:0.72rem;color:var(--text-muted);">Model: ${escHtml(data.model_used)}</div>`
-          : ""
-
-        container.innerHTML += `
-          <div class="chat-bubble assistant">
-            ${escHtml(data.answer)}
-            ${sources ? `<div class="chat-sources">${sources}</div>` : ""}
-            ${modelTag}
-          </div>`
-      } else {
-        container.innerHTML += `<div class="chat-bubble assistant" style="color:var(--error);">✗ ${escHtml(data.detail||"Request failed")}</div>`
-      }
-    } catch(e) {
-      document.getElementById(thinkId)?.remove()
-      container.innerHTML += `<div class="chat-bubble assistant" style="color:var(--error);">✗ Could not reach server</div>`
-    } finally {
-      btn.disabled = false
-      btn.innerHTML = "Ask"
-      container.scrollTop = container.scrollHeight
-    }
+      const res = await fetch(`${API_BASE}/query/ask`, { method: "POST", headers: { "Content-Type": "application/json", "x-admin-password": adminPassword }, body: JSON.stringify({ question, top_k: 5 }) })
+      const data = await res.json(); document.getElementById(thinkId)?.remove()
+      if (res.ok) { const sources = (data.sources || []).map(s => `<span class="source-pill">📄 ${escHtml(s.filename)} <span style="opacity:0.6">·${s.chunk_index}</span></span>`).join(""); const modelTag = data.model_used ? `<div style="margin-top:8px;font-size:0.72rem;color:var(--text-muted);">Model: ${escHtml(data.model_used)}</div>` : ""; container.innerHTML += `<div class="chat-bubble assistant">${escHtml(data.answer)}${sources ? `<div class="chat-sources">${sources}</div>` : ""}${modelTag}</div>` }
+      else { container.innerHTML += `<div class="chat-bubble assistant" style="color:var(--error);">✗ ${escHtml(data.detail || "Request failed")}</div>` }
+    } catch(e) { document.getElementById(thinkId)?.remove(); container.innerHTML += `<div class="chat-bubble assistant" style="color:var(--error);">✗ Could not reach server</div>` }
+    finally { btn.disabled = false; btn.innerHTML = "Ask"; container.scrollTop = container.scrollHeight }
   }
 
-  // ── ADMIN UPLOAD ────────────────────────────────────────────
-  const adminUploadArea = document.getElementById("adminUploadArea")
-  const uploadFileInput = document.getElementById("uploadFileInput")
-
+  const adminUploadArea = document.getElementById("adminUploadArea"), uploadFileInput = document.getElementById("uploadFileInput")
   adminUploadArea.addEventListener("click", () => uploadFileInput.click())
   adminUploadArea.addEventListener("dragover", e => { e.preventDefault(); adminUploadArea.classList.add("dragover") })
   adminUploadArea.addEventListener("dragleave", () => adminUploadArea.classList.remove("dragover"))
-  adminUploadArea.addEventListener("drop", e => {
-    e.preventDefault()
-    adminUploadArea.classList.remove("dragover")
-    if (e.dataTransfer.files[0]) handleAdminFile(e.dataTransfer.files[0])
-  })
+  adminUploadArea.addEventListener("drop", e => { e.preventDefault(); adminUploadArea.classList.remove("dragover"); if (e.dataTransfer.files[0]) handleAdminFile(e.dataTransfer.files[0]) })
   uploadFileInput.addEventListener("change", () => { if (uploadFileInput.files[0]) handleAdminFile(uploadFileInput.files[0]) })
 
-  function handleAdminFile(file) {
-    document.getElementById("adminFileName").textContent = file.name
-    document.getElementById("adminFileSize").textContent = formatBytes(file.size)
-    document.getElementById("adminFileIcon").textContent = file.name.endsWith('.pdf') ? '📕' : '📝'
-    document.getElementById("adminFilePreview").classList.add("visible")
-    document.getElementById("adminUploadBtn").disabled = false
-    hideStatus("adminUploadStatus")
-  }
-
-  function clearAdminFile() {
-    uploadFileInput.value = ""
-    document.getElementById("adminFilePreview").classList.remove("visible")
-    document.getElementById("adminUploadBtn").disabled = true
-    hideStatus("adminUploadStatus")
-  }
+  function handleAdminFile(file) { document.getElementById("adminFileName").textContent = file.name; document.getElementById("adminFileSize").textContent = formatBytes(file.size); document.getElementById("adminFileIcon").textContent = file.name.endsWith('.pdf') ? '📕' : '📝'; document.getElementById("adminFilePreview").classList.add("visible"); document.getElementById("adminUploadBtn").disabled = false; hideStatus("adminUploadStatus") }
+  function clearAdminFile() { uploadFileInput.value = ""; document.getElementById("adminFilePreview").classList.remove("visible"); document.getElementById("adminUploadBtn").disabled = true; hideStatus("adminUploadStatus") }
 
   async function adminUpload() {
-    const file = uploadFileInput.files[0]
-    if (!file) return
-
-    const btn = document.getElementById("adminUploadBtn")
-    btn.disabled = true
-    btn.innerHTML = '<span class="spinner"></span> Uploading...'
-    showStatus("adminUploadStatus", "loading", "Processing document — no limits apply...")
-
-    const form = new FormData()
-    form.append("files", file)
-
-    try {
-      const res = await fetch(`${API_BASE}/documents/upload`, {
-        method: "POST",
-        headers: { "x-admin-password": adminPassword },
-        body: form
-      })
-      const data = await res.json()
-
-      if (res.ok) {
-        showStatus("adminUploadStatus", "success",
-          `✓ "${data.filename}" uploaded — ${data.chunks_created} chunks indexed`)
-        clearAdminFile()
-        loadAllStats()
-      } else {
-        showStatus("adminUploadStatus", "error", `✗ ${data.detail || "Upload failed"}`)
-      }
-    } catch(e) {
-      showStatus("adminUploadStatus", "error", "✗ Could not reach server")
-    } finally {
-      btn.disabled = false
-      btn.innerHTML = "Upload Document"
-    }
+    const file = uploadFileInput.files[0]; if (!file) return
+    const btn = document.getElementById("adminUploadBtn"); btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Uploading...'; showStatus("adminUploadStatus", "loading", "Processing document — no limits apply...")
+    const form = new FormData(); form.append("files", file)
+    try { const res = await fetch(`${API_BASE}/documents/upload`, { method: "POST", headers: { "x-admin-password": adminPassword }, body: form }); const data = await res.json(); if (res.ok) { showStatus("adminUploadStatus", "success", `✓ "${data.filename}" uploaded — ${data.chunks_created} chunks indexed`); clearAdminFile(); loadAllStats(); loadDocuments() } else { showStatus("adminUploadStatus", "error", `✗ ${data.detail || "Upload failed"}`) } } catch(e) { showStatus("adminUploadStatus", "error", "✗ Could not reach server") } finally { btn.disabled = false; btn.innerHTML = "Upload Document" }
   }
 
-  // ── HELPERS ─────────────────────────────────────────────────
-  function showStatus(id, type, msg) {
-    const el = document.getElementById(id)
-    el.className = `status ${type} visible`
-    el.innerHTML = type === "loading" ? `<span class="spinner"></span><span>${msg}</span>` : msg
-  }
-
+  function showStatus(id, type, msg) { const el = document.getElementById(id); el.className = `status ${type} visible`; el.innerHTML = type === "loading" ? `<span class="spinner"></span><span>${msg}</span>` : msg }
   function hideStatus(id) { document.getElementById(id).className = "status" }
-  function formatBytes(b) {
-    if (b < 1024) return b + " B"
-    if (b < 1048576) return (b/1024).toFixed(1) + " KB"
-    return (b/1048576).toFixed(1) + " MB"
-  }
-  function escHtml(str) {
-    if (!str) return ""
-    return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
-  }
+  function formatBytes(b) { if (b < 1024) return b + " B"; if (b < 1048576) return (b/1024).toFixed(1) + " KB"; return (b/1048576).toFixed(1) + " MB" }
+  function escHtml(str) { if (!str) return ""; return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;") }
 
-  // Init if already authenticated
   if (adminPassword) { loadAllStats(); loadDocuments() }
 </script>
 </body>
