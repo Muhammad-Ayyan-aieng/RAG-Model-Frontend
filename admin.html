@@ -343,7 +343,22 @@
       <div class="card-header"><div class="card-title"><div class="card-title-icon">📄</div>All Documents</div><button class="btn btn-ghost btn-sm" onclick="loadDocuments()">⟳ Refresh</button></div>
       <div class="search-row"><input type="text" class="search-input" id="docSearch" placeholder="Search by filename..." oninput="filterDocs(this.value)"><button class="btn btn-outline btn-sm" onclick="loadDocuments()">Reload</button></div>
       <div class="table-wrap">
-        <table><thead><tr><th>Filename</th><th>Document ID</th><th>Chunks</th><th>Uploaded</th><th>Privacy</th><th>Actions</th></tr></thead><tbody id="docsTableBody"><tr><td colspan="6"><div class="table-empty"><div class="table-empty-icon">⟳</div><div>Loading documents...</div></div></td></tr></tbody></table>
+        <table>
+          <thead>
+            <tr>
+              <th>Filename</th>
+              <th>Document ID</th>
+              <th>Chunks</th>
+              <th>Uploaded</th>
+              <th>Privacy</th>
+              <th>User</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="docsTableBody">
+            <tr><td colspan="7"><div class="table-empty"><div class="table-empty-icon">⟳</div><div>Loading documents...</div></div></td></tr>
+          </tbody>
+        </table>
       </div>
       <div class="pagination" id="docsPagination"></div>
     </div>
@@ -379,7 +394,11 @@
   let currentPage = 1
   const PAGE_SIZE = 10
 
-  function togglePwd(id, btn) { const el = document.getElementById(id); el.type = el.type === "password" ? "text" : "password"; btn.textContent = el.type === "password" ? "Show" : "Hide" }
+  function togglePwd(id, btn) { 
+    const el = document.getElementById(id); 
+    el.type = el.type === "password" ? "text" : "password"; 
+    btn.textContent = el.type === "password" ? "Show" : "Hide" 
+  }
 
   async function verifyAdmin() {
     const pwd = document.getElementById("modalPassword").value.trim()
@@ -387,53 +406,178 @@
     const btn = document.getElementById("modalBtn")
     btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Verifying...'; showModalStatus("loading", "Checking credentials...")
     try {
-      const res = await fetch(`${API_BASE}/documents/`, { headers: { "x-admin-password": pwd } })
-      if (res.ok) { adminPassword = pwd; localStorage.setItem("adminPassword", pwd); document.getElementById("authModal").style.display = "none"; document.getElementById("adminPage").style.display = "block"; loadAllStats(); loadDocuments() }
-      else if (res.status === 401) { showModalStatus("error", "✗ Incorrect password"); document.getElementById("modalPassword").value = "" }
-      else { adminPassword = pwd; localStorage.setItem("adminPassword", pwd); document.getElementById("authModal").style.display = "none"; document.getElementById("adminPage").style.display = "block"; loadAllStats(); loadDocuments() }
-    } catch(e) { showModalStatus("error", "✗ Could not reach server") }
-    finally { btn.disabled = false; btn.innerHTML = "Enter Admin Panel" }
+      const res = await fetch(`${API_BASE}/documents/admin/all`, { 
+        headers: { "x-admin-password": pwd } 
+      })
+      if (res.ok) { 
+        adminPassword = pwd; 
+        localStorage.setItem("adminPassword", pwd); 
+        document.getElementById("authModal").style.display = "none"; 
+        document.getElementById("adminPage").style.display = "block"; 
+        loadAllStats(); 
+        loadDocuments() 
+      } else if (res.status === 401) { 
+        showModalStatus("error", "✗ Incorrect password"); 
+        document.getElementById("modalPassword").value = "" 
+      } else { 
+        showModalStatus("error", "✗ Authentication failed") 
+      }
+    } catch(e) { 
+      showModalStatus("error", "✗ Could not reach server") 
+    } finally { 
+      btn.disabled = false; 
+      btn.innerHTML = "Enter Admin Panel" 
+    }
   }
 
-  function adminLogout() { adminPassword = ""; localStorage.removeItem("adminPassword"); document.getElementById("authModal").style.display = "flex"; document.getElementById("adminPage").style.display = "none"; document.getElementById("modalPassword").value = ""; document.getElementById("modalStatus").className = "modal-status" }
-  function showModalStatus(type, msg) { const el = document.getElementById("modalStatus"); el.className = `modal-status ${type} visible`; el.innerHTML = type === "loading" ? `<span class="spinner"></span><span>${msg}</span>` : msg }
+  function adminLogout() { 
+    adminPassword = ""; 
+    localStorage.removeItem("adminPassword"); 
+    document.getElementById("authModal").style.display = "flex"; 
+    document.getElementById("adminPage").style.display = "none"; 
+    document.getElementById("modalPassword").value = ""; 
+    document.getElementById("modalStatus").className = "modal-status" 
+  }
+
+  function showModalStatus(type, msg) { 
+    const el = document.getElementById("modalStatus"); 
+    el.className = `modal-status ${type} visible`; 
+    el.innerHTML = type === "loading" ? `<span class="spinner"></span><span>${msg}</span>` : msg 
+  }
 
   const savedPwd = localStorage.getItem("adminPassword")
-  if (savedPwd) { adminPassword = savedPwd; document.getElementById("authModal").style.display = "none"; document.getElementById("adminPage").style.display = "block" }
+  if (savedPwd) { 
+    adminPassword = savedPwd; 
+    document.getElementById("authModal").style.display = "none"; 
+    document.getElementById("adminPage").style.display = "block";
+    loadAllStats(); 
+    loadDocuments();
+  }
 
-  function switchTab(name) { document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active")); document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active")); document.getElementById("panel-" + name).classList.add("active"); document.getElementById("tab-" + name).classList.add("active"); if (name === "documents") loadDocuments() }
+  function switchTab(name) { 
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active")); 
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active")); 
+    document.getElementById("panel-" + name).classList.add("active"); 
+    document.getElementById("tab-" + name).classList.add("active"); 
+    if (name === "documents") loadDocuments() 
+  }
 
   async function loadAllStats() {
-    try { const res = await fetch(`${API_BASE}/health`, { headers: { "x-admin-password": adminPassword } }); const data = await res.json(); if (res.ok) { document.getElementById("sTotalDocs").textContent = data.total_documents ?? "—"; document.getElementById("sTotalChunks").textContent = data.total_chunks ?? "—" } } catch(e) {}
-    try { const res = await fetch(`${API_BASE}/admin/stats`, { headers: { "x-admin-password": adminPassword } }); if (res.ok) { const data = await res.json(); document.getElementById("sTotalUsers").textContent = data.data?.total_users ?? data.total_users ?? "—"; document.getElementById("sTotalUploads").textContent = data.data?.total_uploads ?? data.total_uploads ?? "—"; document.getElementById("sTotalQueries").textContent = data.data?.total_queries ?? data.total_queries ?? "—" } } catch(e) {}
+    try { 
+      const res = await fetch(`${API_BASE}/documents/admin/stats`, { 
+        headers: { "x-admin-password": adminPassword } 
+      }); 
+      if (res.ok) { 
+        const data = await res.json(); 
+        document.getElementById("sTotalUsers").textContent = data.total_users || "—";
+        document.getElementById("sTotalDocs").textContent = data.total_documents || "—";
+        document.getElementById("sTotalChunks").textContent = data.total_chunks || "—";
+        document.getElementById("sTotalUploads").textContent = data.total_uploads || "—";
+        document.getElementById("sTotalQueries").textContent = data.total_queries || "—";
+      } 
+    } catch(e) { console.error("Stats error:", e) }
   }
 
   async function loadDocuments() {
     const tbody = document.getElementById("docsTableBody")
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;"><span class="spinner" style="margin-right:8px;"></span>Loading...</div></div></td></tr>`
-    try { const res = await fetch(`${API_BASE}/documents/`, { headers: { "x-admin-password": adminPassword } }); const data = await res.json(); allDocs = data.documents || []; currentPage = 1; renderDocsTable(allDocs) } catch(e) { console.error(e); tbody.innerHTML = `<tr><td colspan="6"><div class="table-empty"><div class="table-empty-icon">⚠️</div><div>Could not load documents</div></div></td></tr>` }
+    tbody.innerHTML = `<table><td colspan="7" style="text-align:center;padding:2rem;"><span class="spinner" style="margin-right:8px;"></span>Loading...</td></tr>`
+    try { 
+      const res = await fetch(`${API_BASE}/documents/admin/all`, { 
+        headers: { "x-admin-password": adminPassword } 
+      }); 
+      const data = await res.json(); 
+      if (res.ok) {
+        allDocs = data.documents || []; 
+        currentPage = 1; 
+        renderDocsTable(allDocs);
+        loadAllStats();
+      } else {
+        tbody.innerHTML = `<tr><td colspan="7"><div class="table-empty"><div class="table-empty-icon">⚠️</div><div>${data.detail || "Failed to load documents"}</div></div></td></tr>`
+      }
+    } catch(e) { 
+      console.error(e); 
+      tbody.innerHTML = `<tr><td colspan="7"><div class="table-empty"><div class="table-empty-icon">⚠️</div><div>Could not load documents</div></div></td></tr>`
+    }
   }
 
   function renderDocsTable(docs) {
     const tbody = document.getElementById("docsTableBody"), pagination = document.getElementById("docsPagination")
-    if (docs.length === 0) { tbody.innerHTML = `<tr><td colspan="6"><div class="table-empty"><div class="table-empty-icon">📂</div><div>No documents in the knowledge base yet</div></div></td></tr>`; pagination.innerHTML = ""; return }
+    if (docs.length === 0) { 
+      tbody.innerHTML = `<tr><td colspan="7"><div class="table-empty"><div class="table-empty-icon">📂</div><div>No documents in the knowledge base yet</div></div></td></tr>`; 
+      pagination.innerHTML = ""; 
+      return 
+    }
     const totalPages = Math.ceil(docs.length / PAGE_SIZE), start = (currentPage - 1) * PAGE_SIZE, pageDocs = docs.slice(start, start + PAGE_SIZE)
-    tbody.innerHTML = pageDocs.map(doc => `<tr><td><div class="td-main"><div class="td-icon">${doc.filename?.endsWith('.pdf') ? '📕' : '📝'}</div><span title="${escHtml(doc.filename)}">${escHtml(doc.filename?.length > 28 ? doc.filename.slice(0,28)+'…' : doc.filename || '—')}</span></div></td><td style="font-size:0.75rem;font-family:monospace;">${(doc.document_id||'—').slice(0,12)}…</td><td>${doc.chunks_count ?? '—'}</td><td style="font-size:0.8rem;">${doc.uploaded_at || '—'}</td><td><span class="privacy-badge public">🌐 Public</span></td><td><button class="btn btn-danger btn-sm" onclick="deleteDoc('${doc.document_id}','${escHtml(doc.filename)}')">Delete</button></td></tr>`).join("")
+    tbody.innerHTML = pageDocs.map(doc => {
+      let userDisplay = "🌐 Public User";
+      if (doc.user_id && doc.user_id !== "public") {
+        userDisplay = `👤 ${doc.user_display || doc.user_id.slice(0, 8) + '...'}`;
+      }
+      
+      return `
+        <tr>
+          <td><div class="td-main"><div class="td-icon">${doc.filename?.endsWith('.pdf') ? '📕' : '📝'}</div>
+          <span title="${escHtml(doc.filename)}">${escHtml(doc.filename?.length > 28 ? doc.filename.slice(0,28)+'…' : doc.filename || '—')}</span>
+          </div></td>
+          <td style="font-size:0.7rem;font-family:monospace;">${(doc.document_id||'—').slice(0,8)}…</td>
+          <td>${doc.chunks_count ?? '—'}</td>
+          <td style="font-size:0.75rem;">${doc.uploaded_at || '—'}</td>
+          <td><span class="privacy-badge ${doc.is_private ? 'private' : 'public'}">
+            ${doc.is_private ? '🔒 Private' : '🌐 Public'}
+          </span></td>
+          <td><div style="font-size:0.75rem; color:var(--text-secondary);">${userDisplay}</div></td>
+          <td><button class="btn btn-danger btn-sm" onclick="deleteDoc('${doc.document_id}','${escHtml(doc.filename)}')">Delete</button></td>
+        </tr>
+      `}).join("")
+    
     if (totalPages <= 1) { pagination.innerHTML = ""; return }
     let html = `<button class="page-btn" onclick="changePage(${currentPage-1})" ${currentPage===1?"disabled":""}>‹</button>`
     for (let i = 1; i <= totalPages; i++) html += `<button class="page-btn ${i===currentPage?'active':''}" onclick="changePage(${i})">${i}</button>`
     html += `<button class="page-btn" onclick="changePage(${currentPage+1})" ${currentPage===totalPages?"disabled":""}>›</button>`; pagination.innerHTML = html
   }
 
-  function changePage(page) { const total = Math.ceil(allDocs.length / PAGE_SIZE); if (page < 1 || page > total) return; currentPage = page; renderDocsTable(allDocs) }
-  function filterDocs(query) { const filtered = allDocs.filter(d => (d.filename || "").toLowerCase().includes(query.toLowerCase())); currentPage = 1; renderDocsTable(filtered) }
-
-  async function deleteDoc(id, filename) {
-    if (!confirm(`Delete "${filename}"?\n\nThis removes all chunks from the knowledge base.`)) return
-    try { const res = await fetch(`${API_BASE}/documents/${id}`, { method: "DELETE", headers: { "x-admin-password": adminPassword } }); if (res.ok) { allDocs = allDocs.filter(d => d.document_id !== id); renderDocsTable(allDocs); loadAllStats() } else { alert("Delete failed — check admin password") } } catch(e) { alert("Could not connect to server") }
+  function changePage(page) { 
+    const total = Math.ceil(allDocs.length / PAGE_SIZE); 
+    if (page < 1 || page > total) return; 
+    currentPage = page; 
+    renderDocsTable(allDocs) 
+  }
+  
+  function filterDocs(query) { 
+    const filtered = allDocs.filter(d => (d.filename || "").toLowerCase().includes(query.toLowerCase())); 
+    currentPage = 1; 
+    renderDocsTable(filtered) 
   }
 
-  function clearAdminChat() { const c = document.getElementById("adminChatMessages"); c.innerHTML = `<div class="chat-empty" id="adminChatEmpty"><div class="chat-empty-icon">🔍</div><div>Search across all documents in the knowledge base</div><div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">Admin has full access — all documents are searchable</div></div>` }
+  async function deleteDoc(id, filename) {
+    if (!confirm(`Delete "${filename}"?\n\nThis will permanently remove this document and all its chunks from the knowledge base.`)) return
+    try { 
+      const res = await fetch(`${API_BASE}/documents/admin/${id}`, { 
+        method: "DELETE", 
+        headers: { "x-admin-password": adminPassword } 
+      }); 
+      if (res.ok) { 
+        allDocs = allDocs.filter(d => d.document_id !== id); 
+        renderDocsTable(allDocs); 
+        loadAllStats();
+        const statusDiv = document.getElementById("adminUploadStatus");
+        if (statusDiv) {
+          showStatus("adminUploadStatus", "success", `✓ Deleted "${filename}"`);
+          setTimeout(() => hideStatus("adminUploadStatus"), 3000);
+        }
+      } else { 
+        const error = await res.json();
+        alert(`Delete failed: ${error.detail || "Unknown error"}`); 
+      } 
+    } catch(e) { 
+      alert("Could not connect to server"); 
+    }
+  }
+
+  function clearAdminChat() { 
+    const c = document.getElementById("adminChatMessages"); 
+    c.innerHTML = `<div class="chat-empty" id="adminChatEmpty"><div class="chat-empty-icon">🔍</div><div>Search across all documents in the knowledge base</div><div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">Admin has full access — all documents are searchable</div></div>` 
+  }
 
   async function adminAsk() {
     const question = document.getElementById("adminQuestion").value.trim()
@@ -444,37 +588,115 @@
     container.innerHTML += `<div class="chat-bubble user">${escHtml(question)}</div>`
     const thinkId = "athink_" + Date.now(); container.innerHTML += `<div class="chat-bubble thinking" id="${thinkId}">⟳ Searching all documents...</div>`; container.scrollTop = container.scrollHeight; document.getElementById("adminQuestion").value = ""
     try {
-      const res = await fetch(`${API_BASE}/query/ask`, { method: "POST", headers: { "Content-Type": "application/json", "x-admin-password": adminPassword }, body: JSON.stringify({ question, top_k: 5 }) })
-      const data = await res.json(); document.getElementById(thinkId)?.remove()
-      if (res.ok) { const sources = (data.sources || []).map(s => `<span class="source-pill">📄 ${escHtml(s.filename)} <span style="opacity:0.6">·${s.chunk_index}</span></span>`).join(""); const modelTag = data.model_used ? `<div style="margin-top:8px;font-size:0.72rem;color:var(--text-muted);">Model: ${escHtml(data.model_used)}</div>` : ""; container.innerHTML += `<div class="chat-bubble assistant">${escHtml(data.answer)}${sources ? `<div class="chat-sources">${sources}</div>` : ""}${modelTag}</div>` }
-      else { container.innerHTML += `<div class="chat-bubble assistant" style="color:var(--error);">✗ ${escHtml(data.detail || "Request failed")}</div>` }
-    } catch(e) { document.getElementById(thinkId)?.remove(); container.innerHTML += `<div class="chat-bubble assistant" style="color:var(--error);">✗ Could not reach server</div>` }
-    finally { btn.disabled = false; btn.innerHTML = "Ask"; container.scrollTop = container.scrollHeight }
+      const res = await fetch(`${API_BASE}/query/ask`, { 
+        method: "POST", 
+        headers: { 
+          "Content-Type": "application/json", 
+          "x-admin-password": adminPassword 
+        }, 
+        body: JSON.stringify({ question, top_k: 5 }) 
+      })
+      const data = await res.json(); 
+      document.getElementById(thinkId)?.remove()
+      if (res.ok) { 
+        const sources = (data.sources || []).map(s => `<span class="source-pill">📄 ${escHtml(s.filename)} <span style="opacity:0.6">·${s.chunk_index}</span></span>`).join(""); 
+        const modelTag = data.model_used ? `<div style="margin-top:8px;font-size:0.72rem;color:var(--text-muted);">Model: ${escHtml(data.model_used)}</div>` : ""; 
+        container.innerHTML += `<div class="chat-bubble assistant">${escHtml(data.answer)}${sources ? `<div class="chat-sources">${sources}</div>` : ""}${modelTag}</div>` 
+      } else { 
+        container.innerHTML += `<div class="chat-bubble assistant" style="color:var(--error);">✗ ${escHtml(data.detail || "Request failed")}</div>` 
+      }
+    } catch(e) { 
+      document.getElementById(thinkId)?.remove(); 
+      container.innerHTML += `<div class="chat-bubble assistant" style="color:var(--error);">✗ Could not reach server</div>` 
+    } finally { 
+      btn.disabled = false; 
+      btn.innerHTML = "Ask"; 
+      container.scrollTop = container.scrollHeight 
+    }
   }
 
   const adminUploadArea = document.getElementById("adminUploadArea"), uploadFileInput = document.getElementById("uploadFileInput")
-  adminUploadArea.addEventListener("click", () => uploadFileInput.click())
-  adminUploadArea.addEventListener("dragover", e => { e.preventDefault(); adminUploadArea.classList.add("dragover") })
-  adminUploadArea.addEventListener("dragleave", () => adminUploadArea.classList.remove("dragover"))
-  adminUploadArea.addEventListener("drop", e => { e.preventDefault(); adminUploadArea.classList.remove("dragover"); if (e.dataTransfer.files[0]) handleAdminFile(e.dataTransfer.files[0]) })
-  uploadFileInput.addEventListener("change", () => { if (uploadFileInput.files[0]) handleAdminFile(uploadFileInput.files[0]) })
+  if (adminUploadArea) {
+    adminUploadArea.addEventListener("click", () => uploadFileInput.click())
+    adminUploadArea.addEventListener("dragover", e => { e.preventDefault(); adminUploadArea.classList.add("dragover") })
+    adminUploadArea.addEventListener("dragleave", () => adminUploadArea.classList.remove("dragover"))
+    adminUploadArea.addEventListener("drop", e => { e.preventDefault(); adminUploadArea.classList.remove("dragover"); if (e.dataTransfer.files[0]) handleAdminFile(e.dataTransfer.files[0]) })
+  }
+  if (uploadFileInput) {
+    uploadFileInput.addEventListener("change", () => { if (uploadFileInput.files[0]) handleAdminFile(uploadFileInput.files[0]) })
+  }
 
-  function handleAdminFile(file) { document.getElementById("adminFileName").textContent = file.name; document.getElementById("adminFileSize").textContent = formatBytes(file.size); document.getElementById("adminFileIcon").textContent = file.name.endsWith('.pdf') ? '📕' : '📝'; document.getElementById("adminFilePreview").classList.add("visible"); document.getElementById("adminUploadBtn").disabled = false; hideStatus("adminUploadStatus") }
-  function clearAdminFile() { uploadFileInput.value = ""; document.getElementById("adminFilePreview").classList.remove("visible"); document.getElementById("adminUploadBtn").disabled = true; hideStatus("adminUploadStatus") }
+  function handleAdminFile(file) { 
+    document.getElementById("adminFileName").textContent = file.name; 
+    document.getElementById("adminFileSize").textContent = formatBytes(file.size); 
+    document.getElementById("adminFileIcon").textContent = file.name.endsWith('.pdf') ? '📕' : '📝'; 
+    document.getElementById("adminFilePreview").classList.add("visible"); 
+    document.getElementById("adminUploadBtn").disabled = false; 
+    hideStatus("adminUploadStatus") 
+  }
+  
+  function clearAdminFile() { 
+    if (uploadFileInput) uploadFileInput.value = ""; 
+    document.getElementById("adminFilePreview").classList.remove("visible"); 
+    document.getElementById("adminUploadBtn").disabled = true; 
+    hideStatus("adminUploadStatus") 
+  }
 
   async function adminUpload() {
     const file = uploadFileInput.files[0]; if (!file) return
     const btn = document.getElementById("adminUploadBtn"); btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Uploading...'; showStatus("adminUploadStatus", "loading", "Processing document — no limits apply...")
     const form = new FormData(); form.append("files", file)
-    try { const res = await fetch(`${API_BASE}/documents/upload`, { method: "POST", headers: { "x-admin-password": adminPassword }, body: form }); const data = await res.json(); if (res.ok) { showStatus("adminUploadStatus", "success", `✓ "${data.filename}" uploaded — ${data.chunks_created} chunks indexed`); clearAdminFile(); loadAllStats(); loadDocuments() } else { showStatus("adminUploadStatus", "error", `✗ ${data.detail || "Upload failed"}`) } } catch(e) { showStatus("adminUploadStatus", "error", "✗ Could not reach server") } finally { btn.disabled = false; btn.innerHTML = "Upload Document" }
+    try { 
+      const res = await fetch(`${API_BASE}/documents/upload`, { 
+        method: "POST", 
+        headers: { "x-admin-password": adminPassword }, 
+        body: form 
+      }); 
+      const data = await res.json(); 
+      if (res.ok) { 
+        showStatus("adminUploadStatus", "success", `✓ "${data.filename}" uploaded — ${data.chunks_created} chunks indexed`); 
+        clearAdminFile(); 
+        loadAllStats(); 
+        loadDocuments();
+        setTimeout(() => switchTab('documents'), 1500);
+      } else { 
+        showStatus("adminUploadStatus", "error", `✗ ${data.detail || "Upload failed"}`) 
+      } 
+    } catch(e) { 
+      showStatus("adminUploadStatus", "error", "✗ Could not reach server") 
+    } finally { 
+      btn.disabled = false; 
+      btn.innerHTML = "Upload Document" 
+    }
   }
 
-  function showStatus(id, type, msg) { const el = document.getElementById(id); el.className = `status ${type} visible`; el.innerHTML = type === "loading" ? `<span class="spinner"></span><span>${msg}</span>` : msg }
-  function hideStatus(id) { document.getElementById(id).className = "status" }
-  function formatBytes(b) { if (b < 1024) return b + " B"; if (b < 1048576) return (b/1024).toFixed(1) + " KB"; return (b/1048576).toFixed(1) + " MB" }
-  function escHtml(str) { if (!str) return ""; return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;") }
+  function showStatus(id, type, msg) { 
+    const el = document.getElementById(id); 
+    if (!el) return;
+    el.className = `status ${type} visible`; 
+    el.innerHTML = type === "loading" ? `<span class="spinner"></span><span>${msg}</span>` : msg 
+  }
+  
+  function hideStatus(id) { 
+    const el = document.getElementById(id);
+    if (el) el.className = "status" 
+  }
+  
+  function formatBytes(b) { 
+    if (b < 1024) return b + " B"; 
+    if (b < 1048576) return (b/1024).toFixed(1) + " KB"; 
+    return (b/1048576).toFixed(1) + " MB" 
+  }
+  
+  function escHtml(str) { 
+    if (!str) return ""; 
+    return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;") 
+  }
 
-  if (adminPassword) { loadAllStats(); loadDocuments() }
+  if (adminPassword) { 
+    loadAllStats(); 
+    loadDocuments();
+  }
 </script>
 </body>
 </html>
