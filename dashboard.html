@@ -288,6 +288,7 @@
 
 <script>
   const API_BASE = "https://muhammad-ayyan-aieng-rag-model.hf.space"
+  let chatHistory = []
 
   function initAuth() {
     const token = localStorage.getItem("authToken")
@@ -370,7 +371,12 @@
   if (fileInput) {
     fileInput.addEventListener("change", () => { if (fileInput.files[0]) handleFile(fileInput.files[0]) })
   }
-
+  
+  function clearChat() { 
+    chatHistory = []; 
+    document.getElementById("chatMessages").innerHTML = `<div class="chat-empty" id="chatEmpty"><div class="chat-empty-icon">🧠</div><div>Ask anything about your documents</div><div style="font-size:0.75rem; color: var(--text-muted); margin-top:4px;">Answers are grounded only in your content</div></div>` 
+  }
+  
   function handleFile(file) { 
     document.getElementById("fileName").textContent = file.name; 
     document.getElementById("fileSize").textContent = formatBytes(file.size); 
@@ -388,38 +394,39 @@
   }
 
   async function uploadFile() {
-      const file = fileInput.files[0]; if (!file) return
-      const token = localStorage.getItem("authToken")
-      if (!token) { showStatus("uploadStatus", "error", "Please login to upload documents"); return }
-      
-      const isPrivate = document.getElementById("privacyToggle") ? document.getElementById("privacyToggle").checked : false
-      
-      uploadBtn.disabled = true; uploadBtn.innerHTML = '<span class="spinner"></span>'; showStatus("uploadStatus", "loading", "Processing document...")
-      const form = new FormData(); form.append("files", file)
-      try {
-          const res = await fetch(`${API_BODY}/documents/upload/admin?is_private=${isPrivate}`, { 
-              method: "POST", 
-              headers: { "Authorization": `Bearer ${token}` }, 
-              body: form 
-          })
-          const data = await res.json()
-          if (res.ok) { 
-              showStatus("uploadStatus", "success", `✓ "${data.filename}" — ${data.chunks_created} chunks indexed (${isPrivate ? 'Private' : 'Public'})`); 
-              clearFile(); 
-              loadDocuments(); 
-              loadStats() 
-          } else if (res.status === 409) {
-              showStatus("uploadStatus", "error", `✗ Duplicate: ${data.detail}`);
-              clearFile();
-          } else { 
-              showStatus("uploadStatus", "error", `✗ ${data.detail || "Upload failed"}`) 
-          }
-      } catch(e) { 
-          showStatus("uploadStatus", "error", "✗ Could not reach server") 
-      } finally { 
-          uploadBtn.disabled = false; 
-          uploadBtn.innerHTML = "Upload" 
-      }
+    const file = fileInput.files[0]; if (!file) return
+    const token = localStorage.getItem("authToken")
+    if (!token) { showStatus("uploadStatus", "error", "Please login to upload documents"); return }
+    
+    const isPrivate = document.getElementById("privacyToggle") ? document.getElementById("privacyToggle").checked : false
+    
+    uploadBtn.disabled = true; uploadBtn.innerHTML = '<span class="spinner"></span>'; showStatus("uploadStatus", "loading", "Processing document...")
+    const form = new FormData(); form.append("files", file)
+    try {
+        // FIXED: Changed API_BODY to API_BASE, removed /admin
+        const res = await fetch(`${API_BASE}/documents/upload?is_private=${isPrivate}`, { 
+            method: "POST", 
+            headers: { "Authorization": `Bearer ${token}` }, 
+            body: form 
+        })
+        const data = await res.json()
+        if (res.ok) { 
+            showStatus("uploadStatus", "success", `✓ "${data.filename}" — ${data.chunks_created} chunks indexed (${isPrivate ? 'Private' : 'Public'})`); 
+            clearFile(); 
+            loadDocuments(); 
+            loadStats() 
+        } else if (res.status === 409) {
+            showStatus("uploadStatus", "error", `✗ Duplicate: ${data.detail}`);
+            clearFile();
+        } else { 
+            showStatus("uploadStatus", "error", `✗ ${data.detail || "Upload failed"}`) 
+        }
+    } catch(e) { 
+        showStatus("uploadStatus", "error", "✗ Could not reach server") 
+    } finally { 
+        uploadBtn.disabled = false; 
+        uploadBtn.innerHTML = "Upload" 
+    }
   }
     
   async function askQuestion() {
