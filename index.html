@@ -765,7 +765,7 @@
     form.append("files", file)
 
     try {
-      const res = await fetch(`${API_BASE}/documents/upload`, {
+      const res = await fetch(`${API_BASE}/documents/upload/public`, {
         method: "POST",
         body: form
       })

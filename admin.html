@@ -708,7 +708,7 @@
     tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--text-muted);font-size:0.85rem;"><span class="spinner" style="margin-right:8px;"></span>Loading...</td></tr>`
 
     try {
-      const res = await fetch(`${API_BASE}/documents/`, {
+      const res = await fetch(`${API_BASE}/documents/upload`, {
         headers: { "x-admin-password": adminPassword }
       })
       const data = await res.json()
