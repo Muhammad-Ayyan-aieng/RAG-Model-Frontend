@@ -800,7 +800,7 @@
     showStatus("questionStatus", "loading", "Searching documents and generating answer...")
 
     try {
-      const res = await fetch(`${API_BASE}/query/ask`, {
+      const res = await fetch(`${API_BASE}/query/ask/public`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question, top_k: 3 })
