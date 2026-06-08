@@ -389,7 +389,7 @@
 
 <script>
   const API_BASE = "https://muhammad-ayyan-aieng-rag-model.hf.space"
-  let adminPassword = ""
+  let adminPassword = null
   let allDocs = []
   let currentPage = 1
   const PAGE_SIZE = 10
@@ -431,7 +431,7 @@
   }
 
   function adminLogout() { 
-    adminPassword = ""; 
+    adminPassword = null;
     localStorage.removeItem("adminPassword"); 
     document.getElementById("authModal").style.display = "flex"; 
     document.getElementById("adminPage").style.display = "none"; 
